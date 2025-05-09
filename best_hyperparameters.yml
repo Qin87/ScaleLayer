@@ -1,0 +1,238 @@
+# 97.2±2.1,  96.8±2.1(0.5,-1,-1)
+telegram/:
+  feat_dim: 64
+  l2: 0   # 97.0(0), 95.6(5e-4)
+  inci_norm: 0  # {94.2±4.4(dir) 95.6±3.0(0)}  {93.2(dir), 97.0(0)}
+  has_scheduler: 1
+  NotImproved: 410
+  epoch: 1500
+  patience: 80
+  net: ScaleNet         # 1iGi3
+  conv_type: "dir-gcn"
+  nonlinear: 1
+#  layer: 4
+  lr: 0.01
+  normalize: 1
+  BN_model: 1    # sure
+#  First_self_loop: 1
+#  jk: 'max'
+  dropout: 0.0
+  jk_inner: 0
+  alphaDir: 0.5     # 0.5, 0.2(94.8)
+  betaDir: -1
+  gamaDir: -1
+  seed: 101   # 96.4±2.5(1), 94.8±2.9(11), 97.0±2.2(101)
+
+
+
+#
+cora_ml/:     # 2,0.5,-1---2.0_0.5_2.0--2.0_0.5_0.5--2.0_-1.0_-1.0
+  NotImproved: 410
+  epoch: 1500
+  patience: 80
+  inci_norm: 'dir'
+  has_scheduler: 1
+  conv_type: "dir-gcn"
+  nonlinear: 1
+  net: ScaleNet   #  net: QiGi3
+  feat_dim: 128   # better than 64
+#  layer: 3   # 2(80), 3(75), 4(79.8), 5(79.6)
+  lr: 0.01    # 0.1(79), 0.01(80.7)
+  l2: 0.0005
+  normalize: 0
+  BN_model: 0   # 0(29), 1(79)  # 1(79), 0(82.7)
+#  First_self_loop : 1  # sure
+#  jk: "max"     # max(80.7), cat(79.8), 0(76.9)
+  jk_inner: 0
+  dropout: 0.5   # 0.0(80.51), 0.5(80.76)
+  alphaDir: 2   # 0.5,1.-1 before having 2
+  betaDir: -1  # 1
+  gamaDir: -1  # -1 , 0.5
+  seed: 1999
+
+#
+citeseer/:        # 0.5,2,0----1.0_0.0_0.5, ----1.0_2.0_0.5----2.0_2.0_0.0----2.0_0.0_0.5----2.0_0.0_0.0----2.0_2.0_0.5-----0.5_2.0_0.5---0.0_0.5_2.0--0.5_2.0_2.0
+  NotImproved: 810
+  epoch: 10000
+  patience: 80  # 400
+  has_scheduler: 1
+#  net: ScaleNet
+  conv_type: "dir-gcn"
+#  jk_inner: 0
+  nonlinear: 0    # 0(68.3), 1(67.6)
+  feat_dim: 128
+#  layer: 3     # 1(65.3),2(64.8), 3(62.6), 4(64.0), 5(64.4)
+  lr: 0.01
+  normalize: 1    # 1(68.3), 0 much worse60.7,
+  BN_model: 0   # 0(68.3), 1(66.9)  # for high performance 0 is better.
+#  First_self_loop : 1     # 1(64.75), -1(58.2), 0(57.5)
+#  jk: 'max'   # 'max'(68.3). 'cat'(), 0(67.8)
+  dropout: 0.5   # 0(61.44), 0.5(64.75)
+  inci_norm: 'dir'    # dir(64.8), sym(63.9), row(63.8)
+#  alphaDir: 0.5   # 0,0,0.5 before having 2
+#  betaDir: 2
+#  gamaDir: -1
+
+
+# 79.1±0.8-----
+WikiCS/:
+  inci_norm: 'dir'  # key
+  NotImproved: 410
+  epoch: 1500
+  patience: 80
+  net: ScaleNet
+  conv_type: "dir-gcn"
+  nonlinear: 1
+#  layer: 2
+  lr: 0.001   #0.01
+  normalize: 1
+  BN_model: 0  # 0(23), 1(73.5)
+  First_self_loop : 1  # add(79.1±0.8),0(77.3±0.8), remove(77.4)
+#  jk: 'max'   # max(75.9),cat(75.99), 0(73.5)
+  jk_inner: 0   # not cat
+  dropout: 0.5  # 0.5(75.9), 0.0(73.9)
+  alphaDir: 0.5
+#  betaDir: 2
+  gamaDir: -1   # 0(76.5)
+
+#
+dgl/pubmed:
+  net: ScaleNet
+  conv_type: "dir-gcn"   # sage
+  jk_inner: 'cat'   #cat(76.1±1.6), 0(75.9)
+  nonlinear: 1
+#  layer: 4
+  lr: 0.01
+  normalize: 0
+  BN_model: 0  #
+  First_self_loop : 1
+#  jk: 'max'
+  dropout: 0.0  #0.5(39), 0.0(77.5)
+  alphaDir: 1   # 0.5(72.2), 0(73.2)
+  betaDir: 1    #
+  gamaDir: 1
+
+#  net: ScaleNet
+#  lr: 0.01
+
+  # Alternative configuration (commented out)
+  # net: 1iG
+  # lr: 0.001   # 0.01(74.8), 0.001(76.0)
+  #  net: 1iGi2
+  #  lr: 0.001   # 0.01(70.0), 0.001(75.1)
+
+
+
+# (1,-1,-1@79.6±1.7)--(1,1,1@79.1±1.5)
+WikipediaNetwork/chameleon:     # 1,2,1----1,2,-1------1,1,2-----1,-1,1---(1,-1,-1@79.6±1.7)--(1,1,1@79.1±1.5)
+  monitor: 'acc'
+  l2: 0  # 5e-4 is a bit worse
+  NotImproved: 810
+  epoch: 10000
+  patience: 400
+  has_scheduler: 1
+  feat_dim: 128
+  conv_type: "dir-gcn"
+  inci_norm: "dir"
+  dropout: 0.0  # 0.5(acc65), 0.0(acc75)
+  nonlinear: 1   # on diff in small layer, but deeper differs great, 0 is worse
+#  net: ScaleNet
+  layer: 5      # 80.1
+  lr: 0.005
+  normalize: 1
+  BN_model: 0  #  without layerNorm, very bad(but Dir-GNN prefer no LN)
+  First_self_loop: 0
+#  jk: 'max'
+  jk_inner: 0
+  alphaDir: 1
+#  betaDir: 1
+#  gamaDir: 1
+  seed: 101   # tried 2099,
+
+# (1_1_-1) 74.7±2.4,   (1,-1,-1) 75.2±1.7
+WikipediaNetwork/squirrel:
+  monitor: 'acc'
+  feat_dim: 128
+  l2: 0
+  NotImproved: 810
+  epoch: 10000
+  patience: 400
+  has_scheduler: 1
+  conv_type: "dir-gcn"
+  inci_norm: "dir"  # 0(70.5),
+  nonlinear: 1
+  dropout: 0.0  # 0.5(acc72.7), 0.0(acc75)
+#  net: ScaleNet
+  layer: 6
+  lr: 0.01
+  normalize: 1
+  BN_model: 1 # 0(48.9), 1(72)
+  First_self_loop: 0     # 0 or 1 is worse
+#  jk: 'max'
+  jk_inner: 0
+  alphaDir: 1   # best is 1,1,-1
+  betaDir: 1    #-1
+  gamaDir: 1    # -1
+  seed: 11
+
+# 91.23 ± 0.32(0.5,-1,-1), 92.0±0.4(0.5,-1,-1),
+directed-roman-empire/:
+  nonlinear: 1    # must have this, or acc is 85
+  has_scheduler: 0
+  lr: 0.01
+  First_self_loop: 0   # no selfloops originally
+  BN_model: 0  # no batch norm is better
+  normalize: 0  #
+  feat_dim: 256
+  layer: 5
+  jk: "cat"
+  dropout: 0.2
+  NotImproved: 200
+  conv_type: "dir-sage"   # gcn+mlp is worse
+  alphaDir: 0.5
+  betaDir: -1     # 0 is 88, 1 is 20
+  gamaDir: -1     # all much worse
+
+
+ogbn-arxiv/:
+  nonlinear: 1
+  conv_type: dir-sage
+  layer: 4    # 69.68(4layer)
+  alphaDir: 0.5
+  betaDir: -1     # OOM
+  gamaDir: -1     # OOM
+
+
+WebKB/Cornell:
+  nonlinear: 1
+  conv_type: dir-sage
+  layer: 3
+  alphaDir: 0.5
+  betaDir: -1     #
+  gamaDir: -1     #
+
+
+WebKB/Texas:
+  feat_dim: 64
+  epoch: 1500
+  NotImproved: 410
+  patience: 80
+  First_self_loop: 0   # 83(0), 73(1)
+  lr: 0.1  # bettern than 0.01
+#  mlp: 1  # 0(some split very bad)
+  nonlinear: 1    # 1>0
+  conv_type: dir-gcn
+  layer: 4
+  alphaDir: 0.5
+  betaDir: -1     #
+  gamaDir: -1     #
+  BN_model: 0  #
+  normalize: 0  #  for SAGE
+  dropout: 0.5    # for ScaleNEt0.5, for SAGE0.0
+
+WebKB/Wisconsin:
+  First_self_loop: 0
+  lr: 0.0005
+  has_scheduler: 0
+  dropout: 0.0  # Mag(0),
+  NotImproved: 500
